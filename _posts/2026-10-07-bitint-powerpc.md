@@ -14,7 +14,7 @@ C23 introduced `_BitInt(N)`, an integer type with exactly the width you ask for.
 
 This is an account of closing that gap: designing a binary interface that covers all three Power ELF variants with a single rule, discovering that supported-on-paper big-endian code in the middle end had never been checked — one path untested, another masked — and measuring what the chosen design cost in generated code.
 
-Three pieces of work came out of it. The target support is [PR target/117584](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117584) ([patch](https://gcc.gnu.org/pipermail/gcc-patches/2026-August/728079.html)). Two target-independent miscompilations found along the way went upstream separately: [PR middle-end/126939](https://gcc.gnu.org/pipermail/gcc-patches/2026-August/728125.html), and [PR middle-end/127378](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=127378), [committed in September 2026](https://gcc.gnu.org/cgit/gcc/commit/?id=d9d078c216150bbe0397ded72f035c35b476e88e). Neither was a PowerPC bug. Both sat on big-endian paths that no target had put under real load — one simply untested on the only big-endian target that could reach it, the other masked there by that target's padding semantics.
+Three pieces of work came out of it. The target support is [PR target/117584](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117584) ([patch](https://gcc.gnu.org/cgit/gcc/commit/?id=83998f47450c088493c971d46ae3b6dadb7242b3)). Two target-independent miscompilations found along the way went upstream separately: [PR middle-end/126939](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=126939), [patch committed](https://gcc.gnu.org/cgit/gcc/commit/?id=80a778c167632cb21a4614e893bb68812f135b70), and [PR middle-end/127378](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=127378), [committed in September 2026](https://gcc.gnu.org/cgit/gcc/commit/?id=d9d078c216150bbe0397ded72f035c35b476e88e). Neither was a PowerPC bug. Both sat on big-endian paths that no target had put under real load — one simply untested on the only big-endian target that could reach it, the other masked there by that target's padding semantics.
 
 ---
 
@@ -525,9 +525,9 @@ There is a related loose end on the LLVM side. Clang already declares `_BitInt` 
 ## References
 
 - GCC Bugzilla: [PR target/117584](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=117584) — rs6000 `_BitInt` support
-- rs6000 ABI patch: [gcc-patches 728079](https://gcc.gnu.org/pipermail/gcc-patches/2026-August/728079.html)
-- `gimple-lower-bitint.cc` fix (overflow `memmove`): [PR middle-end/126939](https://gcc.gnu.org/pipermail/gcc-patches/2026-August/728125.html) · [gcc-patches 728125](https://gcc.gnu.org/pipermail/gcc-patches/2026-August/728125.html)
-- `gimple-lower-bitint.cc` fix (big-endian separate_ext loop): [PR middle-end/127378](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=127378) · [commit d9d078c](https://gcc.gnu.org/cgit/gcc/commit/?id=d9d078c216150bbe0397ded72f035c35b476e88e)
+- rs6000 ABI patch: [patch committed](https://gcc.gnu.org/cgit/gcc/commit/?id=83998f47450c088493c971d46ae3b6dadb7242b3)
+- `gimple-lower-bitint.cc` fix (overflow `memmove`): [PR middle-end/126939](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=126939) · [patch committed](https://gcc.gnu.org/cgit/gcc/commit/?id=80a778c167632cb21a4614e893bb68812f135b70)
+- `gimple-lower-bitint.cc` fix (big-endian separate_ext loop): [PR middle-end/127378](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=127378) · [patch committed](https://gcc.gnu.org/cgit/gcc/commit/?id=d9d078c216150bbe0397ded72f035c35b476e88e)
 - ABI specification draft — to be submitted to `syssw-elfv2abi@mailinglist.openpowerfoundation.org`
 - C23: ISO/IEC 9899:2024, §6.2.6.3 (bit-precise integer types)
 - x86-64 psABI: System V ABI, AMD64 Architecture Processor Supplement
