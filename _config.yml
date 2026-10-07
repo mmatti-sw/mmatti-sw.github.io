@@ -1,0 +1,11 @@
+title: "Manjunath S Matti"
+description: "Notes on compilers, systems, and Power architecture"
+theme: minima
+url: "https://mmatti-sw.github.io"
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+minima:
+  social_links:
+    - platform: github
+      user_url: "https://github.com/mmatti-sw"
